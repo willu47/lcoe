@@ -18,6 +18,7 @@ Note: This skeleton file can be safely removed if not needed!
 import argparse
 import sys
 import logging
+import numpy_financial as npf
 
 from lcoe import __version__
 
@@ -28,20 +29,17 @@ __license__ = "mit"
 _logger = logging.getLogger(__name__)
 
 
-def fib(n):
-    """Fibonacci example function
+def lcoe(annual_output, capital_cost, annual_operating_cost, discount_rate, lifetime):
+    """Compute levelised cost of electricity
 
-    Args:
-      n (int): integer
-
-    Returns:
-      int: n-th Fibonacci number
+    Returns
+    -------
+    float
     """
-    assert n > 0
-    a, b = 1, 1
-    for i in range(n-1):
-        a, b = b, a+b
-    return a
+    annual_cost_capital = npf.pmt(discount_rate, lifetime, -capital_cost)
+    total_annual_cost = annual_cost_capital + annual_operating_cost
+
+    return total_annual_cost / annual_output
 
 
 def parse_args(args):
