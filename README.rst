@@ -14,7 +14,7 @@ Calculate levelised cost of electricity on the command line with the ``lcoe`` co
 
 Use the lcoe library in your Python code::
 
-    from lcoe import lcoe
+    from lcoe.lcoe import lcoe
 
     operating_cost = 25000000  #$million/year
     capital_cost = 500000000  # $million
