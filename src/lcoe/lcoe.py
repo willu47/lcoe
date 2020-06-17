@@ -32,6 +32,14 @@ _logger = logging.getLogger(__name__)
 def lcoe(annual_output, capital_cost, annual_operating_cost, discount_rate, lifetime):
     """Compute levelised cost of electricity
 
+    Arguments
+    ---------
+    annual_output : float
+    capital_cost : float
+    annual_operating_cost : float
+    discount_rate : float
+    lifetime : int
+
     Returns
     -------
     float
@@ -58,36 +66,32 @@ def parse_args(args):
         action="version",
         version="lcoe {ver}".format(ver=__version__))
     parser.add_argument(
-        dest="n",
-        help="n-th Fibonacci number",
+        dest="capital_cost",
+        help="Capital cost of the plant in $/kWh",
+        type=float,
+        metavar="FLOAT")
+    parser.add_argument(
+        dest="annual_output",
+        help="Annual output of the plant in kWh",
+        type=float,
+        metavar="FLOAT")
+    parser.add_argument(
+        dest="annual_operating_cost",
+        help="Annual operating cost of the plant in $",
+        type=float,
+        metavar="FLOAT")
+    parser.add_argument(
+        dest="discount_rate",
+        help="Discount rate x where 0 <= x < 1",
+        type=float,
+        metavar="FLOAT")
+    parser.add_argument(
+        dest="lifetime",
+        help="Lifetime of the plant in years",
         type=int,
         metavar="INT")
-    parser.add_argument(
-        "-v",
-        "--verbose",
-        dest="loglevel",
-        help="set loglevel to INFO",
-        action="store_const",
-        const=logging.INFO)
-    parser.add_argument(
-        "-vv",
-        "--very-verbose",
-        dest="loglevel",
-        help="set loglevel to DEBUG",
-        action="store_const",
-        const=logging.DEBUG)
+
     return parser.parse_args(args)
-
-
-def setup_logging(loglevel):
-    """Setup basic logging
-
-    Args:
-      loglevel (int): minimum loglevel for emitting messages
-    """
-    logformat = "[%(asctime)s] %(levelname)s:%(name)s:%(message)s"
-    logging.basicConfig(level=loglevel, stream=sys.stdout,
-                        format=logformat, datefmt="%Y-%m-%d %H:%M:%S")
 
 
 def main(args):
@@ -97,9 +101,14 @@ def main(args):
       args ([str]): command line parameter list
     """
     args = parse_args(args)
-    setup_logging(args.loglevel)
     _logger.debug("Starting crazy calculations...")
-    print("The {}-th Fibonacci number is {}".format(args.n, fib(args.n)))
+    print("LCOE is {}".format(
+        lcoe(args.annual_output, 
+             args.capital_cost, 
+             args.annual_operating_cost, 
+             args.discount_rate, 
+             args.lifetime)
+        ))
     _logger.info("Script ends here")
 
 
