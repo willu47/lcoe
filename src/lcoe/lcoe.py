@@ -32,10 +32,13 @@ def lcoe(annual_output, capital_cost, annual_operating_cost, discount_rate, life
     -------
     float
     """
-    annual_cost_capital = npf.pmt(discount_rate, lifetime, -capital_cost)
-    total_annual_cost = annual_cost_capital + annual_operating_cost
+    total_operating_cost = npf.pv(discount_rate, lifetime, -annual_operating_cost, when=1)
+    discounted_total_cost = capital_cost + total_operating_cost
 
-    return total_annual_cost / annual_output
+    discounted_output = npf.pv(discount_rate, lifetime, -annual_output, when=1)
+    print(discounted_output)
+
+    return discounted_total_cost / discounted_output
 
 
 def parse_args(args):
