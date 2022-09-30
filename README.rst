@@ -10,7 +10,7 @@ Description
 Calculate levelised cost of electricity on the command line with the ``lcoe`` command::
 
     $ lcoe 500000000 2000000000 25000000 0.07 20
-    LCOE is 0.03609823143581392
+    LCOE is 0.03455442190262982
 
 Use the lcoe library in your Python code::
 
